@@ -24,7 +24,7 @@ const Exchange = () => {
         setExchange(data);
         setLoading(false);
 
-      } catch (error) {
+      } catch (Error) {
 
         setError(true);
         setLoading(false);
@@ -36,7 +36,7 @@ const Exchange = () => {
 
   }, []);
 
-  if(Error) return <ErrorComponent message={"Error while fetching data"}/>
+  if (Error) return <ErrorComponent message={"Error while fetching data"} />
 
   return (
 
@@ -44,7 +44,8 @@ const Exchange = () => {
 
       {Loading ? <Loader /> :
         <>
-          <HStack wrap={'wrap'}>
+          <Heading m={'8'} border={'2px'} textAlign={'center'} >Exchanges</Heading>
+          <HStack wrap={'wrap'} justifyContent={'space-evenly'}>
 
             {
               Exchange.map((i) => (
@@ -69,16 +70,26 @@ const ExchangeCard = ({ id, name, imgSrc, rank, url }) => (
 
   <a href={url} target='blank'>
 
-    <VStack w={'52'} p={"8"} borderRadius={'lg'} shadow={'lg'} transition={'all 0.3s'} m={'4'} bgColor={"beige"} color={"black"} css={{
-      "&:hover": {
-        transform: "scale(1.1)"
-      }
-    }} >
+    <VStack
+      w={'40'}
+      h={'40'}
+      p={"6"}
+      borderRadius={'50'}
+      shadow={'lg'}
+      transition={'all 0.3s'}
+      m={'4'}
+      bgColor={"#8b849994"}
+      color={"black"}
+      css={{
+        "&:hover": {
+          transform: "scale(1.1)"
+        }
+      }} >
 
       <Image
         src={imgSrc}
-        w={'10'}
-        h={'10'}
+        w={'14'}
+        h={'14'}
         objectFit={'conatin'}
         alt='Exchange' />
 

@@ -1,4 +1,4 @@
-import { Button, Container, HStack, Heading, Image, Text, VStack } from '@chakra-ui/react'
+import { Button, Container, HStack, Heading, Image, Radio, RadioGroup, Text, VStack } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { server } from "../index"
@@ -55,15 +55,24 @@ const Coins = () => {
     <Container maxW={'container.xl'}>
       {Loading ? <Loader /> :
         <>
+          <Heading m={'8'} border={'2px'} textAlign={'center'} >Coins</Heading>
 
-          <HStack wrap={'wrap'}>
+          <RadioGroup value={Currency} onChange={setCurrency} p={'6'}>
+            <HStack spacing={'4'}>
+              <Radio value='inr' >INR</Radio>
+              <Radio value='eur' >EURO</Radio>
+              <Radio value='usd'>USD</Radio>
+            </HStack>
+          </RadioGroup>
+
+          <HStack wrap={'wrap'} justifyContent={'space-evenly'}>
 
             {
               Coins.map((i) => (
                 <CoinCard
                   name={i.name}
                   symbol={i.symbol}
-                  key={i.id}
+                  id={i.id}
                   imgSrc={i.image}
                   price={i.current_price}
                   currencySymbol={currencySymbol} />
@@ -76,6 +85,7 @@ const Coins = () => {
             {
               btns.map((items, index) => (
                 <Button
+                  key={index}
                   color={'white'}
                   variant={'link'}
 
@@ -95,18 +105,19 @@ const Coins = () => {
   )
 }
 
-const CoinCard = ({ name, imgSrc, key, symbol, price, currencySymbol = '₹' }) => (
+const CoinCard = ({ name, imgSrc, id, symbol, price, currencySymbol = '₹' }) => (
 
 
-  <Link to={`/coins/${key}`}>
+  <Link to={`/coins/${id}`}>
     <VStack
-      w={'52'}
-      p={"8"}
-      borderRadius={'lg'}
+      w={'40'}
+      h={'40'}
+      p={"4"}
+      borderRadius={'50'}
       shadow={'lg'}
       transition={'all 0.3s'}
       m={'4'}
-      bgColor={"beige"}
+      bgColor={"#8b849994"}
       color={"black"}
       css={{
         "&:hover": {
@@ -120,13 +131,13 @@ const CoinCard = ({ name, imgSrc, key, symbol, price, currencySymbol = '₹' }) 
         h={'10'}
         objectFit={'conatin'}
         alt='Exchange'
-        borderRadius={'20'} />
+      />
 
       <Heading noOfLines={'1'} size={'md'}>{name} </Heading>
 
       <Text noOfLines={'1'} >{symbol} </Text>
 
-      <Text>
+      <Text >
         {price ? `${currencySymbol} ${price}` : "NA"}
       </Text>
 
