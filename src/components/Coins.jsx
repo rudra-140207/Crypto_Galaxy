@@ -1,47 +1,139 @@
-import { Container, VStack } from '@chakra-ui/react'
+import { Button, Container, HStack, Heading, Image, Text, VStack } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import {server} from "../index"
+import { server } from "../index"
 import Loader from "./Loader"
+import ErrorComponent from './ErrorComponent'
+import { Link } from 'react-router-dom'
 
 const Coins = () => {
 
-  const [Coins , setCoins] = useState([]);
-const [Loading , setLoading] =useState(true);
+  const [Coins, setCoins] = useState([]);
+  const [Loading, setLoading] = useState(true);
+  const [Error, setError] = useState(false);
+  const [Page, setPage] = useState(1);
+  const [Currency, setCurrency] = useState("inr");
 
-useEffect(()=>{
 
-  const fetchCoins = async()=>{
-const {data} = await axios.get(`${server}/coins/markets?vs_currency=inr`);
-setCoins(data);
-setLoading(false);
+  const currencySymbol = Currency === "inr" ? "₹" : Currency === "eur" ? "€" : "$";
 
+  const changePage = (Page) => {
+    setPage(Page);
+    setLoading(true);
   }
 
-  fetchCoins();
-},[])
+  const btns = new Array(100).fill(1);
+
+  useEffect(() => {
+
+
+    const fetchCoins = async () => {
+
+      try {
+        const { data } =
+          await axios.get(`${server}/coins/markets?vs_currency=${Currency}&page=${Page}`);
+
+        setCoins(data);
+        setLoading(false);
+
+      }
+
+
+      catch (Error) {
+        setError(true)
+        setLoading(false)
+      }
+    }
+
+    fetchCoins();
+
+  }, [Currency, Page])
+
+  if (Error) return <ErrorComponent message={"Error while fetching coins"} />
 
   return (
-<Container maxW={'container.xl'}>
-    {Loading ? <Loader /> : 
-  <>
-    
-    
+    <Container maxW={'container.xl'}>
+      {Loading ? <Loader /> :
+        <>
 
-      <VStack>
+          <HStack wrap={'wrap'}>
 
-{
-  Coins.map((i)=>(
-    <div>{i.name}</div>
-  ))
-}
+            {
+              Coins.map((i) => (
+                <CoinCard
+                  name={i.name}
+                  symbol={i.symbol}
+                  key={i.id}
+                  imgSrc={i.image}
+                  price={i.current_price}
+                  currencySymbol={currencySymbol} />
+              ))
+            }
 
-      </VStack>
+          </HStack>
 
-    
-    </>}
+          <HStack overflowX={'auto'} p={'8'} w={'full'} >
+            {
+              btns.map((items, index) => (
+                <Button
+                  color={'white'}
+                  variant={'link'}
+
+                  onClick={(Page) => {
+                    changePage(index + 1)
+                  }} >
+
+                  {index + 1}
+
+                </Button>
+              ))
+            }
+          </HStack>
+
+        </>}
     </Container>
   )
 }
+
+const CoinCard = ({ name, imgSrc, key, symbol, price, currencySymbol = '₹' }) => (
+
+
+  <Link to={`/coins/${key}`}>
+    <VStack
+      w={'52'}
+      p={"8"}
+      borderRadius={'lg'}
+      shadow={'lg'}
+      transition={'all 0.3s'}
+      m={'4'}
+      bgColor={"beige"}
+      color={"black"}
+      css={{
+        "&:hover": {
+          transform: "scale(1.1)"
+        }
+      }}>
+
+      <Image
+        src={imgSrc}
+        w={'10'}
+        h={'10'}
+        objectFit={'conatin'}
+        alt='Exchange'
+        borderRadius={'20'} />
+
+      <Heading noOfLines={'1'} size={'md'}>{name} </Heading>
+
+      <Text noOfLines={'1'} >{symbol} </Text>
+
+      <Text>
+        {price ? `${currencySymbol} ${price}` : "NA"}
+      </Text>
+
+    </VStack>
+  </Link>
+
+
+)
 
 export default Coins

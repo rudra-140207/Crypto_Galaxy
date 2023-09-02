@@ -12,6 +12,7 @@ const Exchange = () => {
   const [Loading, setLoading] = useState(true);
   const [Error, setError] = useState(false);
 
+
   useEffect(() => {
 
     const fetchExchange = async () => {
