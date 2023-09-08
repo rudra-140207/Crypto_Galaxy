@@ -1,46 +1,87 @@
-import { Badge, Box, Container, HStack, Image, Progress, Radio, RadioGroup, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Text, VStack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
-import Loader from './Loader';
-import axios from 'axios';
-import { server } from '../index';
-import { useParams } from 'react-router-dom';
-import ErrorComponent from './ErrorComponent';
+import { Badge, Box, Button, Container, HStack, Image, Progress, Radio, RadioGroup, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Text, VStack
+} from "@chakra-ui/react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { server } from "../index";
+import Chart from "./Charts";
+import ErrorComponent from "./ErrorComponent";
+import Loader from "./Loader";
 
 const CoinDetails = () => {
-
-  const [Coin, setCoin] = useState([]);
+  const params = useParams();
+  const [Coin, setCoin] = useState({});
   const [Loading, setLoading] = useState(true);
   const [Error, setError] = useState(false);
   const [Currency, setCurrency] = useState("inr");
+  const [days, setDays] = useState("24h");
+  const [chartArray, setChartArray] = useState([]);
 
-  const currencySymbol = Currency === "inr" ? "₹" : Currency === "eur" ? "€" : "$";
+  const currencySymbol =
+    Currency === "inr" ? "₹" : Currency === "eur" ? "€" : "$";
 
-  const Params = useParams();
+  const btns = ["24h", "7d", "14d", "30d", "60d", "200d", "1y", "max"];
+
+  const switchChartStats = (key) => {
+    switch (key) {
+      case "24h":
+        setDays("24h");
+        setLoading(true);
+        break;
+      case "7d":
+        setDays("7d");
+        setLoading(true);
+        break;
+      case "14d":
+        setDays("14d");
+        setLoading(true);
+        break;
+      case "30d":
+        setDays("30d");
+        setLoading(true);
+        break;
+      case "60d":
+        setDays("60d");
+        setLoading(true);
+        break;
+      case "200d":
+        setDays("200d");
+        setLoading(true);
+        break;
+      case "1y":
+        setDays("365d");
+        setLoading(true);
+        break;
+      case "max":
+        setDays("max");
+        setLoading(true);
+        break;
+
+      default:
+        setDays("24h");
+        setLoading(true);
+        break;
+    }
+  };
 
   useEffect(() => {
-
-
     const fetchCoin = async () => {
-
       try {
-        const { data } = await axios.get(`${server}/coins/${Params.id}`);
+        const { data } = await axios.get(`${server}/coins/${params.id}`);
 
-        console.log(data)
+        const { data: chartData } = await axios.get(
+          `${server}/coins/${params.id}/market_chart?vs_currency=${Currency}&days=${days}`
+        );
         setCoin(data);
+        setChartArray(chartData.prices);
         setLoading(false);
-
+      } catch (error) {
+        setError(true);
+        setLoading(false);
       }
-
-
-      catch (Error) {
-        setError(true)
-        setLoading(false)
-      }
-    }
-
+    };
     fetchCoin();
-
-  }, [Params.id])
+  }, [params.id, Currency, days]);
 
   if (Error) return <ErrorComponent message={'Error while fecthing coin details'} />
 
@@ -51,12 +92,21 @@ const CoinDetails = () => {
         Loading ? <Loader /> : (
 
           <>
-            
+            <Box width={"full"} borderWidth={1}>
+              <Chart arr={chartArray} currency={currencySymbol} days={days} />
+            </Box>
 
-
-
-
-
+            <HStack p="4" overflowX={"auto"}>
+              {btns.map((i) => (
+                <Button
+                  disabled={days === i}
+                  key={i}
+                  onClick={() => switchChartStats(i)}
+                >
+                  {i}
+                </Button>
+              ))}
+            </HStack>
             <RadioGroup value={Currency} onChange={setCurrency} p={'6'}>
               <HStack spacing={'4'}>
                 <Radio value='inr' >INR</Radio>

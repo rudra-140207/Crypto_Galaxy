@@ -86,7 +86,7 @@ const Coins = () => {
               btns.map((items, index) => (
                 <Button
                   key={index}
-                  color={'white'}
+                  color={'grey'}
                   variant={'link'}
 
                   onClick={(Page) => {
