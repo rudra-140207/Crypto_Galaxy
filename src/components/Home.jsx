@@ -1,4 +1,4 @@
-import { Box, Image, Text, keyframes, usePrefersReducedMotion } from "@chakra-ui/react";
+import { Box, Container, Image, Text, keyframes, usePrefersReducedMotion } from "@chakra-ui/react";
 import React from "react";
 import btcSrc from "../assets/blockchain-3041480_1920-modified.png";
 import { motion } from "framer-motion";
@@ -17,37 +17,40 @@ const Home = () => {
     : `${spin} infinite 20s linear`;
 
   return (
-    <Box bgColor={"blackAlpha.900"} w={"full"} h={"85vh"}>
 
-      <Text
-        fontSize={"6xl"}
-        textAlign={"center"}
-        fontWeight={"thin"}
-        color={"whiteAlpha.700"}
-      >
-        Crypto Galaxy
-      </Text>
+    <div  >
+      <Box bgColor={"blackAlpha.900"} w={"full"} h={"85vh"}>
 
-
-      <motion.div
-        style={{
-          height: "70vh",
-          width : "100%"
-        }}
-      >
-        <Image
-          p={"4"}
-          w={"max-content"}
-          h={"full"}
-          m={"auto"}
-          objectFit={"contain"}
-          src={btcSrc}
-          animation={animation}
-        />
-      </motion.div>
+        <Text
+          fontSize={"6xl"}
+          textAlign={"center"}
+          fontWeight={"thin"}
+          color={"whiteAlpha.700"}
+        >
+          Crypto Galaxy
+        </Text>
 
 
-    </Box>
+        <motion.div
+          style={{
+            height: "70vh"
+          }}
+        >
+          <Image
+            p={"4"}
+            w={"55%"}
+            h={"55%"}
+            m={"auto"}
+            objectFit={"contain"}
+            src={btcSrc}
+            animation={animation}
+          />
+        </motion.div>
+
+
+      </Box>
+    </div>
+
   );
 };
 
