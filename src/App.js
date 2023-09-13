@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Exchange from './components/Exchange'
 import Coins from './components/Coins'
 import CoinDetails from './components/CoinDetails'
+import Footer from './components/Footer'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path='/exchange' element={<Exchange />} />
           <Route path='/coins/:id' element={<CoinDetails />} />
         </Routes>
+        <Footer />
       </Router>
     </div>
   )
