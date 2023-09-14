@@ -30,11 +30,11 @@ const Home = () => {
           Crypto Galaxy
         </Text>
         <Text
-          fontSize={"md"}
+          fontSize={"18"}
           textAlign={"center"}
           fontFamily={"cursive"}
           color={"gray.400"}
-          w={"50%"}
+          w={"60%"}
           m={"auto"}
         >
           Track Crypto Prices, Exchanges, and Trends in One Place
@@ -55,7 +55,7 @@ const Home = () => {
             src={btcSrc}
             animation={animation}
           />
-          <Text w={["70%", "50%"]} m={"auto"} color={"grey"} fontSize={["15", "15", "20"]} fontFamily={"cursive"} >
+          <Text w={["80%", "50%"]} m={"auto"} color={"grey"} fontSize={["17", "17", "20"]} fontFamily={"cursive"} >
             Welcome to our Crypto Galaxy, where you can stay informed about the latest developments in the world of digital assets. Explore real-time exchange data, monitor coin prices, and delve into price change graphs, all in one convenient place.
           </Text>
         </motion.div>
