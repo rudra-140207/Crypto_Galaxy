@@ -45,7 +45,11 @@ const Exchange = () => {
       {Loading ? <Loader /> :
         <>
           <Heading m={'8'} border={'2px'} textAlign={'center'} >Exchanges</Heading>
+          <Text fontSize={["14","16"]} >
+            * Click on the Exchange to visit their page .
+          </Text>
           <HStack wrap={'wrap'} justifyContent={'space-evenly'}>
+          
 
             {
               Exchange.map((i) => (

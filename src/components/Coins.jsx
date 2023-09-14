@@ -64,6 +64,12 @@ const Coins = () => {
               <Radio value='usd'>USD</Radio>
             </HStack>
           </RadioGroup>
+          <Text>
+            * Click on the coin to get the data .
+          </Text>
+          <Text>
+            * Scroll down to switch the page .
+          </Text>
 
           <HStack wrap={'wrap'} justifyContent={'space-evenly'}>
 
